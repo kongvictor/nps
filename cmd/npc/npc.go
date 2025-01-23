@@ -2,7 +2,6 @@ package main
 
 import (
 	"bufio"
-	"ehang.io/nps/lib/crypt"
 	"flag"
 	"fmt"
 	"os"
@@ -11,6 +10,8 @@ import (
 	"strings"
 	"sync"
 	"time"
+
+	"ehang.io/nps/lib/crypt"
 
 	"ehang.io/nps/client"
 	"ehang.io/nps/lib/common"
@@ -61,9 +62,9 @@ func main() {
 	if common.IsWindows() {
 		*logPath = strings.Replace(*logPath, "\\", "\\\\", -1)
 	}
-	if *debug {
-		logs.SetLogger(logs.AdapterConsole, `{"level":`+*logLevel+`,"color":true}`)
-	} else {
+
+	logs.SetLogger(logs.AdapterConsole, `{"level":`+*logLevel+`,"color":true}`)
+	if !*debug {
 		logs.SetLogger(logs.AdapterFile, `{"level":`+*logLevel+`,"filename":"`+*logPath+`","daily":false,"maxlines":100000,"color":true}`)
 	}
 
