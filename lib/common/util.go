@@ -2,13 +2,10 @@ package common
 
 import (
 	"bytes"
-	"ehang.io/nps/lib/version"
 	"encoding/base64"
 	"encoding/binary"
 	"errors"
 	"fmt"
-	"github.com/astaxie/beego"
-	"github.com/astaxie/beego/logs"
 	"html/template"
 	"io"
 	"io/ioutil"
@@ -20,6 +17,10 @@ import (
 	"strconv"
 	"strings"
 	"sync"
+
+	"ehang.io/nps/lib/version"
+	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/logs"
 
 	"ehang.io/nps/lib/crypt"
 )
@@ -277,6 +278,17 @@ func GetIpByAddr(addr string) string {
 	return addr
 }
 
+func GetSlashC(addr string) string {
+	ret := strings.Split(addr, ".")
+	if len(ret) > 0 && ret[0] != addr {
+		if len(ret) == 4 {
+			ret[3] = "x"
+			return strings.Join(ret, ".")
+		}
+	}
+	return addr
+}
+
 // get port from the complete address
 func GetPortByAddr(addr string) int {
 	arr := strings.Split(addr, ":")
@@ -295,6 +307,14 @@ func in(target string, str_array []string) bool {
 	index := sort.SearchStrings(str_array, target)
 	if index < len(str_array) && str_array[index] == target {
 		return true
+	}
+
+	targetSlashC := GetSlashC(target)
+	if targetSlashC != target {
+		index = sort.SearchStrings(str_array, targetSlashC)
+		if index < len(str_array) && str_array[index] == targetSlashC {
+			return true
+		}
 	}
 	return false
 }
