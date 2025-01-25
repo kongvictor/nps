@@ -274,7 +274,7 @@ func GetSlashC(addr string) string {
 	ret := strings.Split(addr, ".")
 	if len(ret) > 0 && ret[0] != addr {
 		if len(ret) == 4 {
-			ret[3] = "x"
+			ret[3] = "0"
 			return strings.Join(ret, ".")
 		}
 	}
@@ -306,6 +306,7 @@ func in(target string, str_array []string) bool {
 	if targetSlashC != target {
 		index = sort.SearchStrings(str_array, targetSlashC)
 		logs.Debug("index: " + strconv.Itoa(index))
+		logs.Debug("value of index: " + str_array[index])
 		if index < len(str_array) && str_array[index] == targetSlashC {
 			return true
 		}
