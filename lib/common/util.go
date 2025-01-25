@@ -302,8 +302,10 @@ func in(target string, str_array []string) bool {
 	}
 
 	targetSlashC := GetSlashC(target)
+	logs.Debug("targetSlashC: " + targetSlashC)
 	if targetSlashC != target {
 		index = sort.SearchStrings(str_array, targetSlashC)
+		logs.Debug("index: " + strconv.Itoa(index))
 		if index < len(str_array) && str_array[index] == targetSlashC {
 			return true
 		}
