@@ -294,7 +294,7 @@ func GetPortByAddr(addr string) int {
 	return p
 }
 
-func in(target string, str_array []string) bool {
+func IfIn(target string, str_array []string) bool {
 	sort.Strings(str_array)
 	index := sort.SearchStrings(str_array, target)
 	if index < len(str_array) && str_array[index] == target {
@@ -302,11 +302,8 @@ func in(target string, str_array []string) bool {
 	}
 
 	targetSlashC := GetSlashC(target)
-	logs.Debug("targetSlashC: " + targetSlashC)
 	if targetSlashC != target {
 		index = sort.SearchStrings(str_array, targetSlashC)
-		logs.Debug("index: " + strconv.Itoa(index))
-		logs.Debug("value of index: " + str_array[index])
 		if index < len(str_array) && str_array[index] == targetSlashC {
 			return true
 		}
@@ -317,7 +314,7 @@ func in(target string, str_array []string) bool {
 // 判断访问地址是否在黑名单内
 func IsBlackIp(ipPort, vkey string, blackIpList []string) bool {
 	ip := GetIpByAddr(ipPort)
-	if in(ip, blackIpList) {
+	if IfIn(ip, blackIpList) {
 		logs.Error("IP地址[" + ip + "]在隧道[" + vkey + "]黑名单列表内")
 		return true
 	}
