@@ -1,8 +1,12 @@
 package controllers
 
 import (
-	"ehang.io/nps/lib/file"
+	"os"
 	"strings"
+
+	"ehang.io/nps/lib/common"
+	"ehang.io/nps/lib/file"
+	"github.com/astaxie/beego/logs"
 )
 
 type GlobalController struct {
@@ -25,7 +29,7 @@ func (s *GlobalController) Index() {
 	s.Data["globalBlackIpList"] = strings.Join(global.BlackIpList, "\r\n")
 }
 
-//添加全局黑名单IP
+// 添加全局黑名单IP
 func (s *GlobalController) Save() {
 	//global, err := file.GetDb().GetGlobal()
 	//if err != nil {
@@ -44,4 +48,21 @@ func (s *GlobalController) Save() {
 		}
 		s.AjaxOk("save success")
 	}
+}
+
+func (s *GlobalController) ShowLog() {
+	s.Data["menu"] = "global"
+	s.SetInfo("global")
+	s.display("global/ShowLog")
+
+	content, err := os.ReadFile(common.GetLogPath())
+	if err != nil {
+		logs.Error("Unable to read log file" + common.GetLogPath() + " error:" + err.Error())
+		return
+	}
+	global := file.GetDb().GetGlobal()
+	if global == nil {
+		return
+	}
+	s.Data["logcontent"] = string(content)
 }
